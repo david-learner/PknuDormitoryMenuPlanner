@@ -8,8 +8,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 public class MenuParsingClass {
-
-	//public static ArrayList<String[]> menuArr = new ArrayList<String[]>();
+	
 	public String[] menuPlanner = new String[32];
 	public int count = 0;
 
