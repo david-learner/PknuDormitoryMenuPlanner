@@ -17,15 +17,15 @@ public class MenuParsingClass {
 		try {
 			// Document doc =
 			// Jsoup.connect("http://dormitory.pknu.ac.kr/03_notice/notice01.php").get();
-			// ¿©±â¼­´Â ¹Ù·Î ½Ä´ÜÇ¥ÀÇ ³»¿ëÀ» ÆÄ½ÌÇÒ ¼ö ¾ø´Ù.
-			// ¿Ö±×·±Áö ¸ğ¸£°ÚÀ¸³ª Ç¥¿¡¼­ ¹Ù·Î ÅØ½ºÆ®¸¦ »Ì¾Æ³¾ ¼ö ¾ø´Ù.
-			// req_getSchedule.php¿¡¼­ ¹Ş¾Æ¿À´õ¶ó. ÀÏ´ÜÀº ÀÓ½Ã·Î ÀÌ ÁÖ¼Ò¸¦ »ç¿ëÇÏ´Â Áß.
+			// ì—¬ê¸°ì„œëŠ” ë°”ë¡œ ì‹ë‹¨í‘œì˜ ë‚´ìš©ì„ íŒŒì‹±í•  ìˆ˜ ì—†ë‹¤.
+			// ì™œê·¸ëŸ°ì§€ ëª¨ë¥´ê² ìœ¼ë‚˜ í‘œì—ì„œ ë°”ë¡œ í…ìŠ¤íŠ¸ë¥¼ ë½‘ì•„ë‚¼ ìˆ˜ ì—†ë‹¤.
+			// req_getSchedule.phpì—ì„œ ë°›ì•„ì˜¤ë”ë¼. ì¼ë‹¨ì€ ì„ì‹œë¡œ ì´ ì£¼ì†Œë¥¼ ì‚¬ìš©í•˜ëŠ” ì¤‘.
 			doc = Jsoup.connect("http://dormitory.pknu.ac.kr/03_notice/req_getSchedule.php").get();
 
 			MenuParsingClass menuParsingClass = new MenuParsingClass(); // fillContent
-																		// »ç¿ëÇÏ·Á°í
-																		// °´Ã¼ ÇÏ³ª
-																		// »ı¼º
+																		// ì‚¬ìš©í•˜ë ¤ê³ 
+																		// ê°ì²´ í•˜ë‚˜
+																		// ìƒì„±
 			contents = doc.select("div.board_box table thead tr th"); // day of
 																		// the
 																		// week
@@ -36,6 +36,7 @@ public class MenuParsingClass {
 																		// week
 			menuParsingClass.fillContent(contents, 1);
 
+			System.out.println(menuArr.get(0)[0]);
 		} catch (Exception e) {
 			e.getMessage();
 		}
@@ -51,13 +52,20 @@ public class MenuParsingClass {
 			// System.out.println(str);
 			tempStrArr[i] = e.text();
 			++i;
-			++count;
-			if((j = i%7)==1 && arrIndex < 1) {
+			//++count;
+			if ((j = i % 7) == 1 && arrIndex == 0) {
 				menuArr.add(arrIndex, tempStrArr);
+				System.out.println(tempStrArr);
 				break;
-			}else if((j = i%7)==1 && arrIndex > 0) {
-				menuArr.add(arrIndex, tempStrArr);	
-				i = 0; //initiate
+			} else if ((j = i % 7) == 1 && arrIndex > 0) {
+				menuArr.add(arrIndex, tempStrArr);
+				i = 0; // initiate
+				++arrIndex;
+				if(arrIndex > 3)
+				{
+					System.out.println(tempStrArr);
+					break;
+				}
 			}
 		}
 	}
