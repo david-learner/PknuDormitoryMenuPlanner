@@ -9,7 +9,9 @@ import org.jsoup.select.Elements;
 
 public class MenuParsingClass {
 
-	public static ArrayList<String[]> menuArr = new ArrayList<String[]>();
+	//public static ArrayList<String[]> menuArr = new ArrayList<String[]>();
+	public String[] menuPlanner = new String[32];
+	public int count = 0;
 
 	public static void main(String[] args) {
 		Elements contents = null;
@@ -17,24 +19,24 @@ public class MenuParsingClass {
 		try {
 			// Document doc =
 			// Jsoup.connect("http://dormitory.pknu.ac.kr/03_notice/notice01.php").get();
-			// ¿©±â¼­´Â ¹Ù·Î ½Ä´ÜÇ¥ÀÇ ³»¿ëÀ» ÆÄ½ÌÇÒ ¼ö ¾ø´Ù.
-			// ¿Ö±×·±Áö ¸ğ¸£°ÚÀ¸³ª Ç¥¿¡¼­ ¹Ù·Î ÅØ½ºÆ®¸¦ »Ì¾Æ³¾ ¼ö ¾ø´Ù.
-			// req_getSchedule.php¿¡¼­ ¹Ş¾Æ¿À´õ¶ó. ÀÏ´ÜÀº ÀÓ½Ã·Î ÀÌ ÁÖ¼Ò¸¦ »ç¿ëÇÏ´Â Áß.
+			// ì—¬ê¸°ì„œëŠ” ë°”ë¡œ ì‹ë‹¨í‘œì˜ ë‚´ìš©ì„ íŒŒì‹±í•  ìˆ˜ ì—†ë‹¤.
+			// ì™œê·¸ëŸ°ì§€ ëª¨ë¥´ê² ìœ¼ë‚˜ í‘œì—ì„œ ë°”ë¡œ í…ìŠ¤íŠ¸ë¥¼ ë½‘ì•„ë‚¼ ìˆ˜ ì—†ë‹¤.
+			// req_getSchedule.phpì—ì„œ ë°›ì•„ì˜¤ë”ë¼. ì¼ë‹¨ì€ ì„ì‹œë¡œ ì´ ì£¼ì†Œë¥¼ ì‚¬ìš©í•˜ëŠ” ì¤‘.
 			doc = Jsoup.connect("http://dormitory.pknu.ac.kr/03_notice/req_getSchedule.php").get();
 
-			MenuParsingClass menuParsingClass = new MenuParsingClass(); // fillContent
-																		// »ç¿ëÇÏ·Á°í
-																		// °´Ã¼ ÇÏ³ª
-																		// »ı¼º
-			contents = doc.select("div.board_box table thead tr th"); // day of
-																		// the
-																		// week
-			menuParsingClass.fillContent(contents, 0);
+			MenuParsingClass menuParsingClass = new MenuParsingClass();
+			// fillContent ì‚¬ìš©í•˜ë ¤ê³  ê°ì²´ í•˜ë‚˜ ìƒì„±
 
-			contents = doc.select("div.board_box table tbody tr td"); // day of
-																		// the
-																		// week
-			menuParsingClass.fillContent(contents, 1);
+			contents = doc.select("div.board_box table thead tr th"); 
+			/* day of the week */
+			menuParsingClass.fillContent(contents);
+
+			contents = doc.select("div.board_box table tbody tr td");
+			menuParsingClass.fillContent(contents);
+			
+			for(int i=0;i<menuParsingClass.menuPlanner.length;i++) {
+				System.out.println(menuParsingClass.menuPlanner[i]);
+			}
 
 		} catch (Exception e) {
 			e.getMessage();
@@ -42,23 +44,10 @@ public class MenuParsingClass {
 
 	}
 
-	private void fillContent(Elements contents, int arrIndex) {
-		String[] tempStrArr = new String[8];
-		int i = 0, j = 0, count = 0;
-
+	private void fillContent(Elements contents) {
 		for (Element e : contents) {
-			// String str = e.text();
-			// System.out.println(str);
-			tempStrArr[i] = e.text();
-			++i;
-			++count;
-			if((j = i%7)==1 && arrIndex < 1) {
-				menuArr.add(arrIndex, tempStrArr);
-				break;
-			}else if((j = i%7)==1 && arrIndex > 0) {
-				menuArr.add(arrIndex, tempStrArr);	
-				i = 0; //initiate
-			}
+			this.menuPlanner[count] = e.text();
+			count++;
 		}
 	}
 }
