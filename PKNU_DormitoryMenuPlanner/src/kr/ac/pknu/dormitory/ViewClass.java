@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
@@ -15,13 +16,30 @@ public class ViewClass extends Application{
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		// TODO Auto-generated method stub
+		
+		MenuParsingClass menuParsingClass = new MenuParsingClass();
+		
 		primaryStage.setTitle("부경대학교 생활관 식단표");
-		Label label1 = new Label();
 		StackPane root = new StackPane();
-		label1.setText("부경대학교 생활관 식단표");
-        root.getChildren().add(label1);
-		primaryStage.setScene(new Scene(root, 300, 250));
+		GridPane grid = new GridPane();
+		
+		Label[] labelArray = new Label[32];
+		Label label = new Label();
+		String content = null;
+		
+		for(int i = 0; i < 32; i++)
+		{
+			content = menuParsingClass.menuPlanner[i];
+			System.out.println(content);
+			labelArray[i].setText(content);
+			for(int j = 0; j < 4; j++)
+			{
+				GridPane.setConstraints(label, j, i%8);
+			}
+			grid.getChildren().addAll(labelArray);
+		}
+		root.getChildren().add(grid);
+		primaryStage.setScene(new Scene(root, 600, 300));
         primaryStage.show();
 	}
 }
