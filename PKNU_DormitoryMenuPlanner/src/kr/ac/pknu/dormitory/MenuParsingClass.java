@@ -7,8 +7,8 @@ import org.jsoup.select.Elements;
 
 public class MenuParsingClass {
 	
-	public String[] menuPlanner = new String[32];
-	public int count = 0;
+	public String[][] menuPlanner = new String[4][8]; //[row][column]
+	public int i = 0, j = 0;
 	
 	public MenuParsingClass() {
 		Elements contents = null;
@@ -46,8 +46,14 @@ public class MenuParsingClass {
 
 	private void fillContent(Elements contents) {
 		for (Element e : contents) {
-			this.menuPlanner[count] = e.text();
-			count++;
+			String replaceStr = e.text().replaceAll(" ", "\n");
+			this.menuPlanner[i][j] = replaceStr;
+			if(j == 7) {
+				j = 0;
+				i++;
+			}else {
+				j++;
+			}
 		}
 	}
 }
