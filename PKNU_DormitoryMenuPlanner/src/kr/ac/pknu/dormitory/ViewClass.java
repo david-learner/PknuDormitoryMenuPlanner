@@ -10,6 +10,7 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -22,7 +23,9 @@ import javafx.stage.StageStyle;
 public class ViewClass extends Application {
 
 	int rowIndex = 0, columnIndex = 0;
-
+	boolean toggle = true;
+	private static double xOffset = 0;
+	private static double yOffset = 0;
 	// public static void main(String[] args) {
 	// launch(args);
 	// }
@@ -30,13 +33,13 @@ public class ViewClass extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		MenuParsingClass menuParsingClass = new MenuParsingClass();
-
 		VBox verticalBox = new VBox();
 		StackPane root = new StackPane();
 		GridPane grid = new GridPane();
-
 		Label[][] labelArray = new Label[4][8];
 		String content = null;
+		
+		
 
 		// Class<?> labelClass = Class.forName("javafx.scene.control.Label");
 		// //reflection
@@ -59,11 +62,36 @@ public class ViewClass extends Application {
 				grid.getChildren().add(labelArray[i][j]);
 			}
 		}
+
+		/**
+		 *  Make the buttons.
+		 */
+		
+//		Button windowToggleButton = new Button("Å©±âÁ¶Àý");
+//		
+//		windowToggleButton.setOnAction(e -> {
+//			if(toggle){
+//				windowToggleButton.setText("Å©±âÁ¶Àý");
+//				primaryStage.hide();
+//				primaryStage.initStyle(StageStyle.DECORATED);
+//				primaryStage.show();
+//				toggle = !toggle;
+//			}else {
+//				windowToggleButton.setText("Å©±â°íÁ¤");
+//				primaryStage.hide();
+//				primaryStage.initStyle(StageStyle.TRANSPARENT);
+//				primaryStage.show();
+//				toggle = !toggle;
+//			}
+//		});
+		
 		// for¾È¿¡¼­ À½..¾ÆÁ÷ µî·Ï?ÀÌ ¾È µÈ ¼¿À» ÀÌ¿ëÇÏ·Á°í ÇÏ¸é null exception ¿¡·¯°¡ ¶á´Ù.
 		// for¹®À» ¹þ¾î³ª¸é ¸ðµç ¼¿ÀÇ µî·ÏÀÌ ¿Ï·áµÈ »óÅÂÀÌ¹Ç·Î ±×¸®µåÀÇ ¸ðµç ¼¿¿¡ ´ëÇÑ Á¢±ÙÀÌ ÀÚÀ¯·Ó´Ù.
 		timeDisplay(labelArray);
+		//verticalBox.getChildren().add(windowToggleButton);
 		verticalBox.getChildren().add(grid);
 		root.getChildren().add(verticalBox);
+		
 		// root.setAlignment(grid, Pos.CENTER); //¸Å°³º¯¼ö·Î node°¡ µé¾î°¡´Â setAlignment´Â
 		// static¸Þ¼Òµå´Ù. root¸¦ ½áÁÖ¸é °æ°í¶ä ¿Ö?
 		// StackPane.setAlignment(grid, Pos.CENTER_RIGHT);
@@ -73,7 +101,7 @@ public class ViewClass extends Application {
 		// VBoxÀÇ ¸¶Áø°ªÀ» ÁØ´Ù. Insets°´Ã¼¿¡ ´ëÇØ ¾Ë¾Æº¸ÀÚ.
 		// VBox.setMargin(root, new Insets(10, 10, 10, 10));
 		VBox.setMargin(grid, new Insets(30, 10, 15, 10));
-
+		
 		// primaryStage.setScene(new Scene(root, 900, 400));
 		Scene rootScene = new Scene(root, 900, 400);
 		rootScene.setFill(Color.TRANSPARENT);
@@ -81,6 +109,25 @@ public class ViewClass extends Application {
 		root.setStyle("-fx-background-color: rgba(252, 228, 236, 0.7);");
 		// primaryStage.setTitle("ºÎ°æ´ëÇÐ±³ »ýÈ°°ü ½Ä´ÜÇ¥");
 		// primaryStage.initStyle(StageStyle.UNDECORATED);
+		
+		rootScene.setOnMousePressed(e -> {
+			xOffset = primaryStage.getX() - e.getScreenX();
+			yOffset = primaryStage.getY() - e.getScreenY();
+			System.out.println("xOffset : " + xOffset + "stageX : " + primaryStage.getX() + "   Screen X : " + e.getScreenX());
+			System.out.println("yOffset : " + yOffset + "stageY : " + primaryStage.getY() + "   Screen Y : " + e.getScreenY());
+		});		
+		
+		rootScene.setOnMouseDragged(e -> {
+			primaryStage.setX(e.getScreenX() + xOffset);
+			primaryStage.setY(e.getScreenY() + yOffset);
+			System.out.println("ScreenX : " + e.getSceneX() + "  ScreenY : " + e.getScreenY());
+		});
+		
+		
+		
+		
+		
+		//DragResizer dragResizer = new DragResizer((Region)rootScene);
 		primaryStage.initStyle(StageStyle.TRANSPARENT);
 		primaryStage.setScene(rootScene);
 		primaryStage.show();
@@ -94,7 +141,7 @@ public class ViewClass extends Application {
 		GetNow getDate = new GetNow();
 		String date = getDate.date();
 		String labelDay = labelArray[i][j].getText();
-		Pattern p = Pattern.compile("[^°¡-ÆR^\\(^\\)]");
+		Pattern p = Pattern.compile("[^°¡-ÆR^\\(^\\)]"); //Regular Expression ¿ù(1/17) -> 1/17
 		Matcher m = p.matcher(labelDay);
 		String compareString = "";
 		while (m.find()) {
