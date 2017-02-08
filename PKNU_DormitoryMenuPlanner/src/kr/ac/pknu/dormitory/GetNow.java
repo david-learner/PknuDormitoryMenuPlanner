@@ -6,7 +6,7 @@ import java.util.Date;
 
 public class GetNow {
 	public String date(){
-		SimpleDateFormat sdf = new SimpleDateFormat("M/dd");
+		SimpleDateFormat sdf = new SimpleDateFormat("M/d");
 		Calendar c = Calendar.getInstance();
 		String date = sdf.format(c.getTime());
 		return date;

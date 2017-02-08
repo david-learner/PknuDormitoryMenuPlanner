@@ -1,6 +1,7 @@
 package kr.ac.pknu.dormitory;
 
 import java.util.Date;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -37,7 +38,7 @@ public class ViewClass extends Application {
 		StackPane root = new StackPane();
 		GridPane grid = new GridPane();
 		Label[][] labelArray = new Label[4][8];
-		String content = null;
+		String content;
 		
 		
 
@@ -106,6 +107,8 @@ public class ViewClass extends Application {
 		Scene rootScene = new Scene(root, 900, 400);
 		rootScene.setFill(Color.TRANSPARENT);
 		// grid.setStyle("-fx-border-color: burlywood");
+		
+		/* Background Color with transparent */
 		root.setStyle("-fx-background-color: rgba(252, 228, 236, 0.7);");
 		// primaryStage.setTitle("ºÎ°æ´ëÇÐ±³ »ýÈ°°ü ½Ä´ÜÇ¥");
 		// primaryStage.initStyle(StageStyle.UNDECORATED);
@@ -121,11 +124,8 @@ public class ViewClass extends Application {
 			primaryStage.setX(e.getScreenX() + xOffset);
 			primaryStage.setY(e.getScreenY() + yOffset);
 			System.out.println("ScreenX : " + e.getSceneX() + "  ScreenY : " + e.getScreenY());
+			
 		});
-		
-		
-		
-		
 		
 		//DragResizer dragResizer = new DragResizer((Region)rootScene);
 		primaryStage.initStyle(StageStyle.TRANSPARENT);
@@ -142,16 +142,23 @@ public class ViewClass extends Application {
 		String date = getDate.date();
 		String labelDay = labelArray[i][j].getText();
 		Pattern p = Pattern.compile("[^°¡-ÆR^\\(^\\)]"); //Regular Expression ¿ù(1/17) -> 1/17
+		//System.out.println(labelDay);
 		Matcher m = p.matcher(labelDay);
 		String compareString = "";
+		System.out.println(date);
 		while (m.find()) {
 			compareString += m.group();
 		}
+		
+		/* Find the matched date for red border */
 		if (compareString.equals(date)) {
-			System.out.println("i : " + i + "j : " + j);
+			System.out.println("i : " + i + " j : " + j);
 			labelArray[i][j].setStyle("-fx-border-color: red;");
 			rowIndex = i;
 			columnIndex = j;
+		}else {
+			System.out.println("Date is wrong");
+			System.out.println("i : " + i + " j : " + j);
 		}
 	}
 
