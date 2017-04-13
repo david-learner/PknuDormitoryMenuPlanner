@@ -13,6 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import kr.ac.pknu.dormitory.GetNow;
+import kr.ac.pknu.dormitory.util.DateTime;
 
 public class TodayView extends Application {
 	
@@ -39,21 +40,11 @@ public class TodayView extends Application {
 		lunchBtn.setOnAction(e->label.setText(lunchStr));
 		dinnerBtn.setOnAction(e->label.setText(dinnerStr));
 		
-		//LocalDateTime timePoint = LocalDateTime.now();
-		LocalTime nowTime = LocalTime.now();
-		LocalTime breakfastTime = LocalTime.of(9, 0);
-		LocalTime dinnerTime = LocalTime.of(13, 40);
-
-		if(nowTime.isBefore(breakfastTime)) {
-			//System.out.println("breakfast menu appear.");
-			label.setText(breakfastStr);
-		}
-		else if(nowTime.isAfter(dinnerTime)) {
-			//System.out.println("dinner menu appear.");
-			label.setText(dinnerStr);
-		}else {
-			//System.out.println("lunch menu appear.");
-			label.setText(lunchStr);
+		int i = DateTime.getNow();
+		switch(i) {
+			case 1 : label.setText(breakfastStr); break;
+			case 2 : label.setText(lunchStr); break;
+			case 3 : label.setText(dinnerStr); break;
 		}
 			
 		/* buttonBar design */

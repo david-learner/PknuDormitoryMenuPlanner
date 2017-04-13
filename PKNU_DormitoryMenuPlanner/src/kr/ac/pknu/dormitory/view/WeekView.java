@@ -1,6 +1,5 @@
 package kr.ac.pknu.dormitory.view;
 
-import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,11 +17,12 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import kr.ac.pknu.dormitory.GetNow;
 import kr.ac.pknu.dormitory.MenuParsingClass;
+import kr.ac.pknu.dormitory.util.DateTime;
 
 public class WeekView extends Application {
 
+	private Label[][] labelArray = new Label[4][8];
 	public static String breakfast, lunch, dinner;
-	private String str ="0";
 	int todayRowIndex, todayColumnIndex;
 	int rowIndex = 0, columnIndex = 0;
 	boolean toggle = true;
@@ -37,7 +37,7 @@ public class WeekView extends Application {
 		VBox verticalBox = new VBox();
 		StackPane root = new StackPane();
 		GridPane grid = new GridPane();
-		Label[][] labelArray = new Label[4][8];
+		
 		String content;
 
 		// Class<?> labelClass = Class.forName("javafx.scene.control.Label");
@@ -90,7 +90,7 @@ public class WeekView extends Application {
 
 		// for안에서 음..아직 등록?이 안 된 셀을 이용하려고 하면 null exception 에러가 뜬다.
 		// for문을 벗어나면 모든 셀의 등록이 완료된 상태이므로 그리드의 모든 셀에 대한 접근이 자유롭다.
-		timeDisplay(labelArray);
+		timeDisplay();
 		// verticalBox.getChildren().add(windowToggleButton);
 		verticalBox.getChildren().add(grid);
 		root.getChildren().add(verticalBox);
@@ -183,27 +183,12 @@ public class WeekView extends Application {
 	 * if I find date matched today, I will call timeDisplay method in
 	 * dateDisplay.
 	 */
-	@SuppressWarnings("deprecation")
-	public void timeDisplay(Label[][] labelArray) {
-		GetNow getTime = new GetNow();
-		Date nowTime = getTime.time();
-		Date morning = new Date(); // am09:00
-		Date dinner = new Date(); // pm13:40
-		morning.setHours(9);
-		morning.setMinutes(0);
-		dinner.setHours(13);
-		dinner.setMinutes(40);
-
-		if (nowTime.before(morning)) {
-			System.out.println("now is morning");
-			labelArray[1][columnIndex].setStyle("-fx-border-color: red;");
-		} else if (nowTime.after(dinner)) {
-			System.out.println("now is dinner");
-			// System.out.println(labelArray[i][j].toString());
-			labelArray[3][columnIndex].setStyle("-fx-border-color: red;");
-		} else {
-			System.out.println("now is lunch");
-			labelArray[2][columnIndex].setStyle("-fx-border-color: red;");
+	public void timeDisplay() {
+		int i = DateTime.getNow();
+		switch(i) {
+			case 1 : labelArray[1][columnIndex].setStyle("-fx-border-color: red;"); break;
+			case 2 : labelArray[2][columnIndex].setStyle("-fx-border-color: red;"); break;
+			case 3 : labelArray[3][columnIndex].setStyle("-fx-border-color: red;"); break;
 		}
 	}
 

@@ -8,7 +8,7 @@ import org.jsoup.select.Elements;
 public class MenuParsingClass {
 	
 	public String[][] menuPlanner = new String[4][8]; //[row][column]
-	public int i = 0, j = 0;
+	private int i = 0, j = 0;
 	
 	public MenuParsingClass() {
 		Elements contents = null;
